@@ -60,10 +60,10 @@ type OrderLine struct {
 }
 
 type Menu struct {
-    ID          pgtype.UUID   `gorm:"primaryKey;type:uuid"`
-    Price       float32  `gorm:"column:m_price"`
-    Description string   `gorm:"column:m_description"`
-    Url         []string `gorm:"type:text[]"`
+    ID          pgtype.UUID `gorm:"primaryKey;type:uuid"`
+    Price       float64     `gorm:"column:m_price"`
+    Description string      `gorm:"column:m_description"`
+    Url         string    `gorm:"column:url"`
 }
 
 
