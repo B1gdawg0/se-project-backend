@@ -21,7 +21,8 @@ func RegisterApiRouter(app *fiber.App, rqHandler *rest.Handler){
 	user.Get("", rqHandler.User.GetUsers)
 	user.Get("/id=:id", rqHandler.User.GetUserByID)
 	user.Get("/email=:email",rqHandler.User.GetUserByEmail)
-
+	user.Get("/phone=:phone",rqHandler.User.GetCustomerByPhone)
+	user.Post("", rqHandler.User.CreateUser)
 
 	table.Get("", rqHandler.Table.GetTables)
 	table.Get("/id=:id", rqHandler.Table.GetTableByID)

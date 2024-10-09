@@ -7,8 +7,9 @@ import (
 )
 
 type UserRepository interface{
-	FindUserByID(id pgtype.UUID) (*response.FindUserResponse, error)
-	FindUserByEmail(email string) (*response.FindUserResponse, error)
-	FindAll() (*response.FindUsersResponse, error)
+	FindUserByID(id pgtype.UUID) (*entities.User, error) 
+	FindUserByEmail(email string) (*entities.User, error) 
+	FindUserByPhone(phone string) (*entities.User, error)
+	FindAll() ([]*entities.User, error) 
 	Save(user *entities.User) (*response.CreateUserResponse, error)
 }

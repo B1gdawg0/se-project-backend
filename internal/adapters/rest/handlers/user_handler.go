@@ -4,6 +4,11 @@ import (
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/user"
 	"github.com/emicklei/pgtalk/convert"
 	"github.com/gofiber/fiber/v2"
+	"github.com/B1gdawg0/se-project-backend/internal/transaction/requests"
+	"github.com/B1gdawg0/se-project-backend/internal/infrastructure/entities"
+	"github.com/B1gdawg0/se-project-backend/internal/utils"
+
+	
 )
 
 type UserRestHandler struct{
@@ -74,6 +79,65 @@ func (urh *UserRestHandler) GetUserByEmail(c *fiber.Ctx) error{
 		"message":"Successful get list of user",
 		"payload":fiber.Map{
 			"user": response,
+		},
+	})
+}
+func (urh *UserRestHandler) GetCustomerByPhone(c *fiber.Ctx) error{
+	phone := c.Params("phone")
+
+	if phone == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message":"Bad Request",
+		})
+	}
+
+	response, err := urh.usecase.FindUserByPhone(phone)
+
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Internal server error",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message":"Successful get list of user",
+		"payload":fiber.Map{
+			"user": response,
+		},
+	})
+}
+func (trh *UserRestHandler) CreateUser(c *fiber.Ctx) error{
+	rq := new(requests.CreateUserRequest)
+
+	if err := c.BodyParser(rq); err != nil{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message":"Bad Request",
+			"error":err.Error(),
+		})
+	}
+
+	payload := &entities.User{
+		ID: utils.GenerateUUID(),
+		Name: rq.Name,
+		Email: rq.Email,
+		Password: rq.Password,
+		Phone: rq.Phone,
+	}
+
+
+	response, err := trh.usecase.Save(payload)
+
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Bad Request",
+			"error":err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message":"Succesful create User",
+		"payload":fiber.Map{
+			"table":response,
 		},
 	})
 }

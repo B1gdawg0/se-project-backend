@@ -19,34 +19,19 @@ func ProvideUserRepository(db *gorm.DB) user.UserRepository {
 	}
 }
 
-func (uri *UserRepositoryImpl) FindUserByEmail(email string) (*response.FindUserResponse, error){
-	response, err := uri.Queries.FindUserByEmail(email)
-	
-	if err != nil{
-		return nil, err
-	}
-
-	return response, nil
+func (uri *UserRepositoryImpl) FindUserByEmail(email string) (*entities.User, error) {
+	return uri.Queries.FindUserByEmail(email)
 }
 
-func (uri *UserRepositoryImpl) FindUserByID(id pgtype.UUID) (*response.FindUserResponse, error){
-	response, err := uri.Queries.FindUserByID(id)
-	
-	if err != nil{
-		return nil, err
-	}
-
-	return response, nil
+func (uri *UserRepositoryImpl) FindUserByID(id pgtype.UUID) (*entities.User, error){
+	return uri.Queries.FindUserByID(id)
+}
+func (uri *UserRepositoryImpl) FindUserByPhone(phone string) (*entities.User, error){
+	return uri.Queries.FindUserByPhone(phone)
 }
 
-func (uri *UserRepositoryImpl) FindAll() (*response.FindUsersResponse, error) {
-	response, err := uri.Queries.FindAll()
-
-	if err != nil {
-		return nil, err
-	}
-
-	return response, nil
+func (uri *UserRepositoryImpl) FindAll() ([]*entities.User, error) {
+	return uri.Queries.FindAll()
 }
 
 func (uri *UserRepositoryImpl) Save(user *entities.User) (*response.CreateUserResponse, error) {

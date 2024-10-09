@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-
 	"github.com/emicklei/pgtalk/convert"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
