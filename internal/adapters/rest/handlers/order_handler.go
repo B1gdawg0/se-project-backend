@@ -5,6 +5,7 @@ import (
 	"github.com/B1gdawg0/se-project-backend/internal/transaction/requests"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/order"
 	"github.com/B1gdawg0/se-project-backend/internal/utils"
+	"github.com/B1gdawg0/se-project-backend/rabbit"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -111,6 +112,24 @@ func (orh *OrderRestHandler) CreateOrderByID(c *fiber.Ctx) error{
 		})
 	}
 
+	id, err := utils.StringToUUID(response.ID)
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Internal server error",
+			"error": err.Error(),
+		})
+	}
+
+	data, err := orh.usecase.FindOrderByID(*id)
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Internal server error",
+			"error": err.Error(),
+		})
+	}
+
+	rabbit.SendMessage("order","email", data)
+
 	return c.JSON(fiber.Map{
 		"message":"Succesful create order",
 		"payload":fiber.Map{
@@ -134,6 +153,24 @@ func (orh *OrderRestHandler) CreateOrderWithOrderLines(c *fiber.Ctx) error{
 			"error": err.Error(),
 		})
 	}
+
+	id, err := utils.StringToUUID(res.ID)
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Internal server error",
+			"error": err.Error(),
+		})
+	}
+
+	data, err := orh.usecase.FindOrderByID(*id)
+	if err != nil{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message":"Internal server error",
+			"error": err.Error(),
+		})
+	}
+
+	rabbit.SendMessage("order","email", data)
 
 	return c.JSON(res)
 }

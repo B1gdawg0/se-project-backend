@@ -9,6 +9,7 @@ import (
 	"github.com/B1gdawg0/se-project-backend/internal/infrastructure/entities"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/admin"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/auth"
+	"github.com/B1gdawg0/se-project-backend/internal/usecases/discount"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/igline"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/menu"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/musicline"
@@ -16,7 +17,6 @@ import (
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/orderline"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/table"
 	"github.com/B1gdawg0/se-project-backend/internal/usecases/user"
-	"github.com/B1gdawg0/se-project-backend/internal/usecases/discount"
 )
 
 func InitHandler() *rest.Handler{
@@ -33,7 +33,8 @@ func InitHandler() *rest.Handler{
         &entities.Menu{},
 		&entities.Discount{},
 		); 
-		err != nil{ panic("Can't Automigrate Database: Auto shutdown...")}
+		err != nil{ panic("Can't Automigrate Database: Auto shutdown...")
+	}
 
 	userRepo := repositories.ProvideUserRepository(db)
 	userService := user.ProvideUserService(userRepo)
